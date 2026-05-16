@@ -20,9 +20,9 @@ def main():
     os.makedirs(img_dir, exist_ok=True)
     
     # 1. Load Data
-    orders = pd.read_csv(os.path.join(data_dir, "olist_orders_dataset.csv"))
-    order_items = pd.read_csv(os.path.join(data_dir, "olist_order_items_dataset.csv"))
-    customers = pd.read_csv(os.path.join(data_dir, "olist_customers_dataset.csv"))
+    orders = pd.read_csv(os.path.join(data_dir, "olist_orders_dataset.csv.zip"))
+    order_items = pd.read_csv(os.path.join(data_dir, "olist_order_items_dataset.csv.zip"))
+    customers = pd.read_csv(os.path.join(data_dir, "olist_customers_dataset.csv.zip"))
     
     date_cols = ['order_purchase_timestamp', 'order_estimated_delivery_date', 'order_delivered_customer_date']
     for col in date_cols:
@@ -69,7 +69,7 @@ def main():
     plt.ylabel("평균 운임 비중 (%)")
     plt.xticks(rotation=0)
     plt.tight_layout()
-    plt.savefig(os.path.join(img_dir, "sol1_freight_subsidy.png"))
+    plt.savefig(os.path.join(img_dir, "sol1_freight_subsidy.png"), facecolor='white')
     plt.close()
 
     # ==========================================
@@ -102,7 +102,7 @@ def main():
     plt.title("북부/북동부 예상 배송일 보수화 적용에 따른 지연율 감소")
     plt.ylim(0, before_late_rate + 10)
     plt.tight_layout()
-    plt.savefig(os.path.join(img_dir, "sol2_delay_reduction.png"))
+    plt.savefig(os.path.join(img_dir, "sol2_delay_reduction.png"), facecolor='white')
     plt.close()
 
     # ==========================================
@@ -126,7 +126,7 @@ def main():
     plt.xlabel("고객 거주 주 (State)")
     plt.ylabel("배송 소요 일수 (Days)")
     plt.tight_layout()
-    plt.savefig(os.path.join(img_dir, "sol3_regional_boxplot.png"))
+    plt.savefig(os.path.join(img_dir, "sol3_regional_boxplot.png"), facecolor='white')
     plt.close()
 
     # Write output to text
