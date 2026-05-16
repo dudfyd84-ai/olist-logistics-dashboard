@@ -3,283 +3,466 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Olist Logistics Experience Optimizer</title>
+<title>Olist Logistics Consulting Report</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy-900: #0b1f3a;
-    --navy-800: #11294d;
-    --navy-700: #1a3a6b;
-    --navy-600: #2a4d85;
-    --navy-500: #3b62a3;
-    --navy-100: #e7ecf5;
-    --navy-50:  #f3f6fb;
-    --blue-accent: #2563eb;
-    --blue-soft: #dbeafe;
-    --green-600: #15803d;
-    --green-500: #16a34a;
-    --green-100: #dcfce7;
-    --orange-600: #c2410c;
-    --orange-500: #ea580c;
-    --orange-100: #ffedd5;
-    --red-600: #b91c1c;
-    --red-500: #dc2626;
-    --red-100: #fee2e2;
-    --purple-600: #7e22ce;
-    --purple-100: #f3e8ff;
-    --gray-900: #111827;
-    --gray-700: #374151;
-    --gray-600: #4b5563;
-    --gray-500: #6b7280;
-    --gray-400: #9ca3af;
-    --gray-300: #d1d5db;
-    --gray-200: #e5e7eb;
-    --gray-100: #f3f4f6;
-    --gray-50:  #f9fafb;
-    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-    --shadow-md: 0 2px 8px rgba(15, 23, 42, 0.06);
-    --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
-    --radius: 10px;
-    --radius-sm: 6px;
+    --primary: #1e40af;       /* Deep Trust Blue */
+    --primary-light: #eff6ff; /* Soft Blue bg */
+    --accent: #0d9488;        /* Teal for insight */
+    --accent-light: #f0fdfa;  
+    --warning: #e11d48;       /* Rose for problem */
+    --warning-light: #fff1f2;
+    --ai-color: #6d28d9;      /* Purple for AI */
+    --ai-light: #f5f3ff;
+    
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --text-light: #94a3b8;
+    
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    
+    --border-color: #e2e8f0;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    
+    --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.08);
   }
+
   * { box-sizing: border-box; }
+  
   body {
-    margin: 0; background-color: var(--gray-50); color: var(--gray-900);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard", "Noto Sans KR", Roboto, sans-serif;
-    font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+    margin: 0; 
+    background-color: var(--bg-page); 
+    color: var(--text-main);
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    font-size: 15px; 
+    line-height: 1.6; 
+    -webkit-font-smoothing: antialiased;
   }
-  /* Topnav */
-  .topnav { background: var(--navy-900); color: #fff; height: 56px; display: flex; align-items: center; padding: 0 24px; position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow-md); }
-  .topnav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
-  .brand-logo { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
-  .topnav .nav-links { margin-left: 32px; display: flex; gap: 4px; }
-  .topnav .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
-  .topnav .nav-links a.active { background: rgba(255,255,255,0.12); color:#fff; }
-  .topnav .right { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 12.5px; color: rgba(255,255,255,0.8); }
-  .badge-env { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 999px; font-size: 11px; }
-  /* Layout */
-  .app { display: grid; grid-template-columns: 232px 1fr; min-height: calc(100vh - 56px); }
-  .sidebar { background: #fff; border-right: 1px solid var(--gray-200); padding: 18px 12px; }
-  .sidebar .section-label { font-size: 11px; color: var(--gray-500); text-transform: uppercase; padding: 6px 10px; margin-top: 10px; }
-  .sidebar .menu-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; color: var(--gray-700); cursor: pointer; font-size: 13px; }
-  .sidebar .menu-item.active { background: var(--navy-50); color: var(--navy-700); font-weight: 600; }
-  .main { padding: 24px 28px 60px; max-width: 1400px; }
-  /* Hero */
-  .hero { background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); color: #fff; border-radius: 14px; padding: 28px 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
-  .hero::after { content: ""; position: absolute; right: -80px; top: -80px; width: 280px; height: 280px; background: radial-gradient(circle at center, rgba(59,130,246,0.35), transparent 70%); }
-  .hero h1 { margin: 0 0 8px; font-size: 24px; letter-spacing: -0.2px; }
-  .hero .sub { font-size: 14px; color: rgba(255,255,255,0.85); max-width: 720px; line-height: 1.6; }
-  /* Section */
-  .section { margin-bottom: 28px; }
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .section-header h2 { margin: 0; font-size: 17px; color: var(--navy-900); }
-  .section-header .desc { font-size: 12.5px; color: var(--gray-500); margin-top: 2px; }
-  .section-num { display: inline-block; background: var(--navy-100); color: var(--navy-700); border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 700; margin-right: 8px; }
-  /* Custom Grids */
-  .action-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 16px; }
-  .action-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 18px; position: relative; border-left: 4px solid var(--blue-accent); }
-  .action-card.ai-card { border-left-color: var(--purple-600); background: #faf5ff; }
-  .action-card h3 { margin: 0 0 4px; font-size: 15px; color: var(--navy-900); }
-  .action-card .target { font-size: 12px; color: var(--gray-500); margin-bottom: 12px; }
-  .action-card .insight { background: var(--gray-50); padding: 10px; border-radius: 6px; font-size: 13px; color: var(--gray-700); margin-bottom: 10px; line-height: 1.6; border-left: 3px solid var(--orange-500); }
-  .action-card .plan { background: var(--blue-soft); padding: 10px; border-radius: 6px; font-size: 13px; color: var(--navy-800); line-height: 1.6; font-weight: 500; }
-  .ai-card .plan { background: var(--purple-100); color: var(--purple-600); }
-  /* Chart.js wrap */
-  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .chart-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; text-align: center; }
-  .chart-wrap h4 { margin: 0 0 10px; font-size: 14px; text-align: left; }
-  .chart-sub { font-size: 11.5px; color: var(--gray-500); margin-bottom: 10px; text-align: left; }
-  .chart-canvas-box { position: relative; width: 100%; height: 260px; }
-  .chart-wrap img { max-width: 100%; border-radius: 6px; }
+
+  /* Consulting Style Navbar */
+  .navbar {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky; top: 0; z-index: 100;
+    padding: 16px 0;
+  }
+  .nav-container {
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-logo {
+    font-size: 20px; font-weight: 700; color: var(--primary);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo span {
+    background: var(--primary); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 14px;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 80px 20px;
+    margin-bottom: 40px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--primary-light) 100%);
+    border-bottom: 1px solid var(--border-color);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-soft);
+  }
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 24px;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 760px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Section Styles */
+  .section {
+    margin-bottom: 80px;
+  }
+  .section-header {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: var(--text-main);
+  }
+  .section-header p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    padding: 32px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Key Insight Box */
+  .insight-box {
+    background: var(--warning-light);
+    border-left: 4px solid var(--warning);
+    padding: 20px 24px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-top: 24px;
+  }
+  .insight-box h4 {
+    margin: 0 0 8px; color: var(--warning); font-size: 16px; font-weight: 700;
+  }
+  .insight-box p {
+    margin: 0; color: var(--text-main); font-size: 15px;
+  }
+
+  /* Chart Layout */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .chart-container {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-soft);
+  }
+  .chart-container h3 {
+    margin: 0 0 6px; font-size: 16px; color: var(--text-main);
+  }
+  .chart-container p {
+    margin: 0 0 20px; font-size: 13px; color: var(--text-muted);
+  }
+  .canvas-wrapper {
+    position: relative; height: 240px; width: 100%;
+  }
+  .chart-container img {
+    width: 100%; height: auto; border-radius: 8px; margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+  }
+
+  /* Solution Cards Grid */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .solution-card {
+    display: flex; flex-direction: column;
+  }
+  .sol-num {
+    background: var(--primary-light); color: var(--primary);
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; margin-bottom: 16px;
+  }
+  .solution-card h3 {
+    margin: 0 0 12px; font-size: 18px; color: var(--text-main); line-height: 1.4;
+  }
+  .sol-target {
+    font-size: 13px; color: var(--primary); font-weight: 600; margin-bottom: 16px;
+  }
+  .sol-insight {
+    background: var(--bg-page); padding: 16px; border-radius: 8px;
+    font-size: 14px; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .sol-plan {
+    background: var(--accent-light); border-left: 3px solid var(--accent);
+    padding: 16px; border-radius: 4px; font-size: 14px; color: var(--text-main); font-weight: 500;
+    margin-top: auto;
+  }
+
+  /* AI Service Card */
+  .ai-card {
+    background: linear-gradient(to right bottom, #ffffff, var(--ai-light));
+    border: 1px solid #ddd6fe;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, #a855f7, #6366f1);
+  }
+  .ai-badge {
+    display: inline-block; background: var(--ai-color); color: #fff;
+    padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .ai-content {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  .ai-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+  .ai-plan { 
+    background: #fff; padding: 20px; border-radius: 12px;
+    border: 1px solid #ddd6fe; font-size: 14px; color: var(--text-main);
+    box-shadow: var(--shadow-soft);
+  }
+  
+  @media (max-width: 768px) {
+    .ai-content { grid-template-columns: 1fr; }
+  }
+
+  .footer {
+    text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 13px;
+    border-top: 1px solid var(--border-color);
+  }
 </style>
 </head>
 <body>
 
-<header class="topnav">
-  <div class="brand">
-    <div class="brand-logo">LO</div>
-    <span>Olist Logistics Optimizer</span>
-    <span class="badge-env">Executive Report</span>
-  </div>
-  <nav class="nav-links">
-    <a class="active">대시보드 홈</a>
-  </nav>
-  <div class="right">
-    <div class="user-chip">
-      <div class="avatar">PM</div>
-      <span>Product Manager</span>
+<header class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <span>Olist</span> Consulting Report
     </div>
   </div>
 </header>
 
-<div class="app">
-  <aside class="sidebar">
-    <div class="section-label">Workspace</div>
-    <div class="menu-item active"><span class="icn">■</span>문제 진단 및 가설</div>
-    <div class="menu-item"><span class="icn">▲</span>물류 개선방안 3선</div>
-    <div class="menu-item"><span class="icn">✨</span>AI 추천 서비스</div>
-  </aside>
+<section class="hero">
+  <div class="hero-badge">Executive Strategy Report</div>
+  <h1>고객 이탈을 멈추고 수익성을 회복하는<br>물류 최적화 솔루션</h1>
+  <p>
+    배송 지연과 과도한 배송비가 고객의 평점과 재구매율에 심각한 타격을 주고 있습니다.<br>
+    본 컨설팅 리포트는 <b>현재의 병목 현상을 진단</b>하고, 즉각적인 매출 상승을 이끌어낼 <b>3대 핵심 개선 플랜</b>과 미래 경쟁력을 확보할 <b>AI 딥러닝 서비스</b>를 제안합니다.
+  </p>
+</section>
 
-  <main class="main">
-    <section class="hero">
-      <h1>물류 경험 악화로 인한 고객 이탈 방지 및 최적화 전략</h1>
-      <div class="sub">
-        최근 분석 결과, 배송 지연과 과도한 배송비가 고객의 평점과 재구매율에 심각한 타격을 주고 있음을 확인했습니다. 본 리포트는 <b>현재의 문제점을 명확히 진단</b>하고, 이를 해결하기 위한 <b>3가지 핵심 물류 개선사항</b>과 <b>딥러닝 기반 신규 비즈니스 서비스</b>를 제안합니다.
-      </div>
-    </section>
-
-    <!-- 01. 문제 진단 시각화 (Chart.js) -->
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <h2><span class="section-num" style="background:var(--red-100); color:var(--red-600);">01</span>현재 문제점: 배송 지연과 고객 이탈(Retention Drop)의 상관관계</h2>
-          <div class="desc">실제 데이터 기반으로 배송 경험이 평점 및 잔존율에 미치는 치명적 악영향을 시각화했습니다.</div>
-        </div>
-      </div>
-
-      <div class="chart-row">
-        <!-- Chart 1: Delay vs Review Score -->
-        <div class="chart-wrap">
-          <h4>가설 검증 1: 배송 지연 일수별 리뷰 평점 하락폭</h4>
-          <div class="chart-sub">예상 배송일을 초과할수록 평점이 4.5점에서 1점대로 급격히 추락합니다.</div>
-          <div class="chart-canvas-box">
-            <canvas id="delayChart"></canvas>
-          </div>
-        </div>
-        
-        <!-- Chart 2: Retention by Delivery Experience -->
-        <div class="chart-wrap">
-          <h4>가설 검증 2: 배송 경험별 고객 잔존율(Retention) 비교</h4>
-          <div class="chart-sub">지연을 경험한 코호트는 정상 배송 코호트 대비 재구매율이 심각하게 이탈합니다.</div>
-          <div class="chart-canvas-box">
-            <canvas id="retentionChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="action-card" style="border-left-color: var(--red-500); background: #fff5f5; width: 100%; margin-bottom: 32px;">
-        <h3 style="color:var(--red-600); margin-top:0;">데이터 분석 기반 핵심 인사이트</h3>
-        <p style="margin-bottom:0; font-size:13.5px; line-height: 1.6; color: var(--gray-700);">
-          <b>배송 경험 악화가 초래하는 악순환:</b> 위 그래프에서 증명되듯, 고객의 실제 도착일이 예상 배송일을 단 하루만 초과해도 리뷰 점수는 가파르게 하락합니다. 특히 3일 이상의 지연을 경험한 고객 코호트의 경우, 익월 잔존율(Retention)이 정상 배송을 경험한 코호트 대비 무려 30% 이상 낮게 형성되는 심각한 비즈니스 리스크가 발생합니다. 배송비 비중의 불균형과 배송 지연은 플랫폼의 성장 동력을 완전히 차단하는 가장 큰 원흉입니다.
-        </p>
-      </div>
-    </section>
-
-    <!-- 02. 개선사항 3가지 -->
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <h2><span class="section-num">02</span>해결방안: 핵심 물류 개선사항 및 비즈니스 플랜 3선</h2>
-          <div class="desc">위에서 확인된 문제를 해결하고 고객 경험을 개선하기 위한 3가지 전략적 액션 플랜을 도출했습니다.</div>
-        </div>
-      </div>
-
-      <div class="action-list">
-        <!-- Action 1 -->
-        <div class="action-card">
-          <h3>1. 고부담 셀러 타겟 물류 보조금 정책</h3>
-          <div class="target">적용 대상: 상품가 대비 배송비 비율(freight_ratio)이 40% 이상으로 과도한 셀러</div>
-          <div class="insight">
-            <b>인사이트:</b> 배송비가 상품 가격을 초과하거나 비중이 과도하게 높을 경우 고객 구매 전환율이 급락하며, 상위 20% 셀러와 하위 셀러 간 매출 격차를 유발하는 가장 큰 원인이 바로 이 '배송비 비율'의 차이에 있음을 데이터로 증명했습니다.
-          </div>
-          <div class="plan">
-            <b>비즈니스 액션 플랜:</b> 상품가 대비 배송비 비중이 40%를 초과하는 고위험 셀러를 대상으로 묶음 배송 인프라를 제공하거나, 한시적인 배송 보조금을 지원하는 '마일스톤 인센티브' 제도를 신설하여 플랫폼 전반의 구매 전환율을 즉각적으로 끌어올려야 합니다.
-          </div>
-        </div>
-
-        <!-- Action 2 -->
-        <div class="action-card">
-          <h3>2. 북부/북동부 예상 배송일 동적 보정</h3>
-          <div class="target">적용 대상: 물류 인프라가 취약한 브라질 북부(N) 및 북동부(NE) 지역 배송 건</div>
-          <div class="insight">
-            <b>인사이트:</b> 북부 및 북동부 지역은 타 지역 대비 물리적 거리와 인프라 한계로 인해 배송 지연 발생 확률이 3배 이상 높게 나타났으며, 이로 인해 해당 지역 고객들의 불만족과 1점 리뷰 테러가 집중되고 있음을 확인했습니다.
-          </div>
-          <div class="plan">
-            <b>비즈니스 액션 플랜:</b> 배송 지연으로 인한 고객 불만을 사전에 차단하기 위해, 해당 취약 지역으로 배송되는 주문의 경우 알고리즘을 통해 고객에게 노출되는 '예상 배송일' 자체를 평균 2.5일 여유 있게 보수적으로 늘려 안내하는 '기대치 컨트롤(Expectation Management)' 로직을 즉각 도입해야 합니다.
-          </div>
-        </div>
-
-        <!-- Action 3 -->
-        <div class="action-card" style="grid-column: span 2;">
-          <h3>3. 주요 권역별 마이크로 풀필먼트 거점 분산</h3>
-          <div class="target">적용 대상: 상파울루(SP) 지역 외 구매 비중이 높은 고성장 권역 (RJ, MG 등)</div>
-          <div class="insight">
-            <b>인사이트:</b> Olist의 물류 창고와 판매자가 상파울루(SP)에 40% 이상 편중되어 있어, 타 주(State)로 배송될 때 발생하는 크로스 도킹 시간과 장거리 운송 비용이 전체 물류 프로세스의 거대한 병목 현상으로 작용하여 고객 이탈을 가속하고 있습니다.
-          </div>
-          <div class="plan">
-            <b>비즈니스 액션 플랜:</b> 배송 소요 시간이 길고 주문량이 급증하는 리우데자네이루(RJ) 및 미나스제라이스(MG) 권역에 마이크로 풀필먼트 센터(MFC)를 신설하고, 핵심 셀러들의 재고를 선제적으로 전진 배치하여 익일 배송 커버리지를 2배 이상 혁신적으로 확장해야 합니다.
-          </div>
-        </div>
-      </div>
-
-      <div class="chart-row">
-        <div class="chart-wrap">
-          <h4>도입 시뮬레이션 1: 보조금 지원 시 배송비율 하락 기대효과</h4>
-          <img src="../images/solutions/sol1_freight_subsidy.png" alt="물류 보조금 시각화" />
-        </div>
-        <div class="chart-wrap">
-          <h4>도입 시뮬레이션 2: 예상일 보정 후 지연율 감소 효과</h4>
-          <img src="../images/solutions/sol2_delay_reduction.png" alt="예상일 보정 시각화" />
-        </div>
-      </div>
-    </section>
-
-    <!-- 03. 신규 서비스 추천 -->
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <h2><span class="section-num" style="background:var(--purple-100); color:var(--purple-600);">NEW</span>AI 추천 신규 비즈니스 서비스</h2>
-          <div class="desc">현재 분석된 문제점들을 근본적으로 해결하고 고객 가치를 창출하기 위한 차세대 딥러닝 서비스를 제안합니다.</div>
-        </div>
-      </div>
-
-      <div class="action-card ai-card" style="width: 100%;">
-        <h3 style="color:var(--purple-600);">✨ 딥러닝 기반 실시간 물류 예측 및 지연 조기 경보 챗봇 (AI-Logistics Sentinel)</h3>
-        <div class="target">적용 대상: Olist 전체 배송 파이프라인 및 알림톡(WhatsApp) 챗봇 연동</div>
-        <div class="insight" style="border-left-color:var(--purple-600);">
-          <b>AI 딥러닝 데이터 인사이트:</b> 현재의 통계 분석 한계를 넘어, 과거 수백만 건의 주문/기상/교통 데이터와 운송사별 지연 패턴을 딥러닝 알고리즘(Transformer)에 학습시키면, 상품이 출고되는 즉시 해당 패키지의 "도착 지연 확률"을 95% 이상의 높은 정확도로 실시간 예측해 낼 수 있습니다.
-        </div>
-        <div class="plan">
-          <b>비즈니스 액션 플랜 (신규 서비스 런칭 전략):</b> 
-          주문 발생 즉시 딥러닝 엔진이 배송 지연 위험도를 판단하여, '지연 고위험군'으로 분류된 주문은 일반 택배가 아닌 특급 물류 파트너사로 자동 라우팅(Dynamic Routing)하는 시스템을 구축합니다. 
-          더 나아가 불가피하게 배송 지연이 90% 확정된 건에 대해서는, 불만 리뷰가 쏟아지기 최소 24시간 전에 시스템이 먼저 "배송 지연 진심 사과 쿠폰"을 알림톡으로 선제 발송하는 '조기 경보 및 보상 챗봇 서비스'를 런칭해야 합니다. 이는 부정적 리뷰를 원천 차단하고 오히려 고객 충성도를 폭발적으로 끌어올리는 강력한 수익 방어선이 될 것입니다.
-        </div>
-      </div>
-    </section>
-
-    <div style="text-align:center; color: var(--gray-400); font-size: 12px; margin-top: 32px;">
-      © 2026 Olist Logistics Optimizer Mockup · AI Analysis Project
+<main class="container">
+  
+  <!-- 01. 문제 진단 (Charts) -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label" style="color: var(--warning);">Phase 01. Diagnosis</span>
+      <h2>배송 경험 악화로 인한 비즈니스 타격</h2>
+      <p>실제 데이터 분석 결과, 배송 정시성 실패가 고객 이탈(Retention Drop)로 직결되는 명확한 상관관계를 확인했습니다.</p>
     </div>
-  </main>
-</div>
+
+    <div class="chart-grid">
+      <!-- Chart 1 -->
+      <div class="chart-container">
+        <h3>배송 지연 일수별 리뷰 평점 하락폭</h3>
+        <p>예상일을 초과하는 순간 고객 평점은 4.5점에서 1점대로 수직 낙하합니다.</p>
+        <div class="canvas-wrapper">
+          <canvas id="delayChart"></canvas>
+        </div>
+      </div>
+      <!-- Chart 2 -->
+      <div class="chart-container">
+        <h3>배송 경험별 고객 잔존율(Retention) 비교</h3>
+        <p>지연 배송을 겪은 코호트의 재구매율은 정상 대비 절반 이하로 붕괴됩니다.</p>
+        <div class="canvas-wrapper">
+          <canvas id="retentionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>핵심 진단 (Key Findings)</h4>
+      <p>
+        고객의 실제 도착일이 안내된 예상 배송일을 단 하루만 초과해도 브랜드 신뢰도는 붕괴됩니다. 특히 3일 이상의 지연을 겪은 고객군의 익월 재구매율(Retention)이 무려 30% 이상 급락하는 현상은, <b>'물류 정시성'이 단순한 서비스 지표가 아닌 플랫폼 생존의 핵심 트리거</b>임을 증명합니다. 배송비 불균형과 병목 현상을 방치하면 마케팅 비용을 늘려도 밑빠진 독에 물 붓기가 됩니다.
+      </p>
+    </div>
+  </div>
+
+  <!-- 02. 솔루션 3선 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label" style="color: var(--accent);">Phase 02. Solutions</span>
+      <h2>핵심 물류 개선 플랜 3선</h2>
+      <p>문제점을 즉각적으로 완화하고 고객의 구매 여정을 매끄럽게 만들기 위한 3단계 전략입니다.</p>
+    </div>
+
+    <div class="solution-grid">
+      <!-- Action 1 -->
+      <div class="card solution-card">
+        <div class="sol-num">1</div>
+        <h3>고부담 셀러 타겟<br>물류 보조금 정책</h3>
+        <div class="sol-target">대상: 배송비 비율(freight_ratio) 40% 이상 셀러</div>
+        <div class="sol-insight">
+          배송비가 상품 가격에 육박할 때 구매 전환율이 급락하며, 상·하위 셀러 간 매출 양극화의 근본 원인이 '배송비 장벽'에 있음을 입증했습니다.
+        </div>
+        <div class="sol-plan">
+          <b>Action Plan:</b> 고위험 셀러를 위해 묶음 배송 인프라를 제공하고, 한시적인 배송 보조금을 지원하는 '마일스톤 인센티브' 제도를 신설하여 이탈하던 결제 직전의 고객을 즉각적으로 붙잡아야 합니다.
+        </div>
+      </div>
+
+      <!-- Action 2 -->
+      <div class="card solution-card">
+        <div class="sol-num">2</div>
+        <h3>북부/북동부<br>예상 배송일 동적 보정</h3>
+        <div class="sol-target">대상: 인프라 취약 권역 (N / NE 지역) 배송 건</div>
+        <div class="sol-insight">
+          물리적 거리가 먼 북/북동부 지역은 지연 발생 확률이 3배 높으며, 이로 인해 고객들의 악성 1점 리뷰 테러가 해당 권역에 집중되고 있습니다.
+        </div>
+        <div class="sol-plan">
+          <b>Action Plan:</b> 지연을 막을 수 없다면 기대를 통제해야 합니다. 해당 지역 주문 시 고객에게 노출되는 '예상 배송일' 알고리즘에 평균 +2.5일의 여유를 두어 안내하는 '기대치 컨트롤' 방식을 전면 도입합니다.
+        </div>
+      </div>
+
+      <!-- Action 3 -->
+      <div class="card solution-card">
+        <div class="sol-num">3</div>
+        <h3>주요 권역별 마이크로<br>풀필먼트 거점 분산</h3>
+        <div class="sol-target">대상: 상파울루(SP) 외 고성장 권역 (RJ, MG)</div>
+        <div class="sol-insight">
+          현재 창고와 판매자가 상파울루(SP)에 40% 이상 집중되어 있어, 타 주 배송 시 발생하는 크로스도킹 과정이 전체 물류의 거대한 병목으로 작용합니다.
+        </div>
+        <div class="sol-plan">
+          <b>Action Plan:</b> 수요가 급증하는 리우(RJ), 미나스제라이스(MG) 권역에 소규모 마이크로 풀필먼트 센터(MFC)를 신설, 핵심 재고를 선제 배치하여 익일 배송 커버리지를 최소 2배 이상 혁신적으로 넓혀야 합니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시각화 레퍼런스 -->
+  <div class="section">
+    <div class="chart-grid">
+      <div class="chart-container" style="text-align: center; box-shadow: none; border: none; background: transparent;">
+        <h3>도입 시뮬레이션: 보조금 지원 시 배송비율 완화</h3>
+        <img src="../images/solutions/sol1_freight_subsidy.png" alt="물류 보조금 시각화" style="max-width: 80%; border: 1px solid var(--border-color); box-shadow: var(--shadow-soft);"/>
+      </div>
+      <div class="chart-container" style="text-align: center; box-shadow: none; border: none; background: transparent;">
+        <h3>도입 시뮬레이션: 예상일 보정 후 지연 불만 감소율</h3>
+        <img src="../images/solutions/sol2_delay_reduction.png" alt="예상일 보정 시각화" style="max-width: 80%; border: 1px solid var(--border-color); box-shadow: var(--shadow-soft);"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03. 신규 AI 서비스 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label" style="color: var(--ai-color);">Phase 03. Future Innovation</span>
+      <h2>AI 기반 신규 비즈니스 서비스 제안</h2>
+      <p>단기적 개선을 넘어, Olist 플랫폼의 근본적인 테크 경쟁력을 끌어올릴 차세대 솔루션입니다.</p>
+    </div>
+
+    <div class="card ai-card">
+      <div class="ai-badge">✨ New Revenue Service</div>
+      <h3 style="font-size: 24px; color: var(--text-main); margin: 0 0 24px;">AI-Logistics Sentinel (지능형 조기 경보 및 라우팅)</h3>
+      
+      <div class="ai-content">
+        <div>
+          <h4 style="color: var(--ai-color); margin: 0 0 12px; font-size: 16px;">딥러닝 데이터 인사이트</h4>
+          <p class="ai-desc">
+            과거 수백만 건의 주문 이력, 기상청 API, 실시간 교통 트래픽, 운송사별 지연 패턴을 다변량 시계열 모델(Transformer/LSTM)로 심층 학습합니다. 이를 통해 상품 출고 즉시 해당 패키지의 <b>"최종 도착 지연 확률"을 95% 이상의 정확도로 실시간 추론</b>해냅니다.
+          </p>
+        </div>
+        <div class="ai-plan">
+          <h4 style="margin: 0 0 12px; color: var(--text-main); font-size: 16px;">비즈니스 액션 플랜</h4>
+          <ul style="padding-left: 20px; margin: 0; line-height: 1.7; font-size: 14px;">
+            <li style="margin-bottom: 8px;"><b>다이내믹 라우팅:</b> 지연 고위험군으로 분류된 주문은 일반 택배사가 아닌 특급 물류 파트너사로 자동 재할당합니다.</li>
+            <li><b>조기 경보 챗봇:</b> 불가피하게 지연이 90% 이상 확정된 건은, 불만 폭주 24시간 전에 시스템이 먼저 <b>"배송 지연 진심 사과 쿠폰"</b>을 알림톡으로 선제 발송합니다. 이는 컴플레인을 방어하고 오히려 고객 감동을 이끌어내는 수익 방어선이 됩니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  © 2026 Olist Logistics Consulting · Empowered by Data Analytics & AI
+</footer>
 
 <script>
+  Chart.defaults.font.family = "'Pretendard', sans-serif";
+  Chart.defaults.color = "#475569";
+
   // Chart 1: Delay vs Review Score
   const ctxDelay = document.getElementById('delayChart').getContext('2d');
   new Chart(ctxDelay, {
     type: 'line',
     data: {
-      labels: ['-5일(조기 도착)', '-2일', '0일(예상일)', '1일 지연', '3일 지연', '5일 지연', '10일 지연'],
+      labels: ['-5일', '-2일', '0일(예상)', '+1일', '+3일', '+5일', '+10일'],
       datasets: [{
         label: '평균 리뷰 평점',
         data: [4.6, 4.4, 4.1, 3.1, 2.3, 1.8, 1.2],
-        borderColor: '#dc2626',
-        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225, 29, 72, 0.1)',
         borderWidth: 3,
-        pointBackgroundColor: '#dc2626',
-        pointRadius: 5,
+        pointBackgroundColor: '#e11d48',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 6,
         fill: true,
-        tension: 0.3
+        tension: 0.4
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: { min: 1, max: 5, title: { display: true, text: '리뷰 점수 (1~5점)' } }
+        y: { 
+          min: 1, max: 5, 
+          grid: { borderDash: [4, 4], color: '#f1f5f9' },
+          title: { display: true, text: '리뷰 점수 (1~5점)' }
+        },
+        x: { grid: { display: false } }
       },
       plugins: {
-        legend: { display: false }
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          padding: 12,
+          titleFont: { size: 14 },
+          bodyFont: { size: 14 }
+        }
       }
     }
   });
@@ -289,19 +472,23 @@
   new Chart(ctxRet, {
     type: 'bar',
     data: {
-      labels: ['M+1 (1개월 뒤)', 'M+2 (2개월 뒤)', 'M+3 (3개월 뒤)', 'M+4 (4개월 뒤)'],
+      labels: ['1개월 뒤', '2개월 뒤', '3개월 뒤', '4개월 뒤'],
       datasets: [
         {
-          label: '정상 배송 고객군',
+          label: '정상 배송 코호트',
           data: [15.2, 8.4, 6.1, 4.8],
-          backgroundColor: '#16a34a',
-          borderRadius: 4
+          backgroundColor: '#0d9488',
+          borderRadius: 6,
+          barPercentage: 0.6,
+          categoryPercentage: 0.8
         },
         {
-          label: '지연 배송 고객군',
+          label: '지연 배송 코호트',
           data: [5.1, 2.3, 1.2, 0.8],
-          backgroundColor: '#ea580c',
-          borderRadius: 4
+          backgroundColor: '#f43f5e',
+          borderRadius: 6,
+          barPercentage: 0.6,
+          categoryPercentage: 0.8
         }
       ]
     },
@@ -309,10 +496,18 @@
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: { title: { display: true, text: '재구매율 (Retention %)' } }
+        y: { 
+          grid: { borderDash: [4, 4], color: '#f1f5f9' },
+          title: { display: true, text: '재구매율 (%)' }
+        },
+        x: { grid: { display: false } }
       },
       plugins: {
-        legend: { position: 'bottom' }
+        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          padding: 12
+        }
       }
     }
   });
