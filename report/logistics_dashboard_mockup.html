@@ -434,6 +434,9 @@
         <div class="sol-plan" style="background: #f0fdf4; border-left-color: var(--green-500);">
           <b>비용-수익 시뮬레이션:</b> 보조금 10% 지원 시 결제 이탈 고객의 전환율이 평균 <b>2.5%p 상승</b>하며, 이는 해당 세그먼트의 총매출 <b>약 15% 증가</b>로 이어집니다. 보조금 지출액(Cost) 대비 증가하는 플랫폼 수수료 수익(Revenue)이 <b>3배 이상(ROI 300%)</b>에 달해, 도입 후 1.5개월 내에 손익분기점(BEP)을 초과 달성할 수 있습니다.
         </div>
+        <div class="canvas-wrapper" style="margin-top:24px; height: 220px;">
+          <canvas id="roi1Chart"></canvas>
+        </div>
       </div>
 
       <!-- ROI 2 -->
@@ -446,6 +449,9 @@
         </div>
         <div class="sol-plan" style="background: #f0fdf4; border-left-color: var(--green-500);">
           <b>비용-수익 시뮬레이션:</b> 딥러닝 예측을 통해 불만 발생 24시간 전 '10 BRL 상당의 진심 사과 쿠폰'을 자동 발행할 경우, <b>악성 CS 컴플레인 인입을 70% 방어</b>하여 CS 인건비를 획기적으로 절감합니다. 또한 쿠폰 수령 고객의 이탈률을 30%에서 <b>5% 이하로 방어</b>함으로써, 쿠폰 발급 비용(Cost) 대비 지켜낸 고객 평생 가치(LTV) 수익이 <b>5.5배 이상</b>의 거대한 재무적 가치를 창출합니다.
+        </div>
+        <div class="canvas-wrapper" style="margin-top:24px; height: 220px;">
+          <canvas id="roi2Chart"></canvas>
         </div>
       </div>
     </div>
@@ -545,6 +551,69 @@
           backgroundColor: 'rgba(15, 23, 42, 0.9)',
           padding: 12
         }
+      }
+    }
+  });
+  // ROI 1: Subsidy Cost vs Revenue
+  const ctxRoi1 = document.getElementById('roi1Chart').getContext('2d');
+  new Chart(ctxRoi1, {
+    type: 'bar',
+    data: {
+      labels: ['보조금 투입액 (Cost)', '증가한 수수료 수익 (Revenue)'],
+      datasets: [{
+        label: '금액 (단위: 1,000 BRL)',
+        data: [30, 90], // ROI 300%
+        backgroundColor: ['#f43f5e', '#0d9488'],
+        borderRadius: 6,
+        barPercentage: 0.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { 
+          beginAtZero: true,
+          grid: { borderDash: [4, 4], color: '#f1f5f9' },
+          title: { display: true, text: '시뮬레이션 가치' }
+        },
+        x: { grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
+      }
+    }
+  });
+
+  // ROI 2: Coupon Cost vs CS+LTV Savings
+  const ctxRoi2 = document.getElementById('roi2Chart').getContext('2d');
+  new Chart(ctxRoi2, {
+    type: 'bar',
+    data: {
+      labels: ['쿠폰 발급 비용', '절감된 CS 비용 + 이탈 방어 수익'],
+      datasets: [{
+        label: '건당 기대 효과 (BRL)',
+        data: [10, 55], // 10 BRL cost vs ~55 BRL saved
+        backgroundColor: ['#f59e0b', '#16a34a'],
+        borderRadius: 6,
+        barPercentage: 0.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { 
+          beginAtZero: true,
+          grid: { borderDash: [4, 4], color: '#f1f5f9' },
+          title: { display: true, text: '건당 가치 (BRL)' }
+        },
+        x: { grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
       }
     }
   });
